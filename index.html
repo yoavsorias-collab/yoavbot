@@ -101,13 +101,6 @@
             margin-bottom: 20px;
         }
 
-        .section-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
         .input-group {
             display: flex;
             gap: 10px;
@@ -131,6 +124,7 @@
         .input-group textarea {
             resize: vertical;
             min-height: 80px;
+            width: 100%;
         }
 
         .input-group input:focus,
@@ -189,7 +183,7 @@
             word-break: break-word;
         }
 
-        .minecraft-mod {
+        .mod-output {
             background: #f0f0f0;
             border-right: 4px solid #667eea;
             padding: 15px;
@@ -380,6 +374,16 @@
             border-left: 4px solid #f56565;
         }
 
+        .loading {
+            display: inline-block;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 1.8em;
@@ -392,10 +396,6 @@
             .tab-btn {
                 padding: 10px 16px;
                 font-size: 0.9em;
-            }
-
-            .section-grid {
-                grid-template-columns: 1fr;
             }
 
             .input-group {
@@ -415,15 +415,28 @@
             border-radius: 8px;
             padding: 15px;
             font-family: 'Courier New', monospace;
-            font-size: 0.9em;
+            font-size: 0.85em;
             overflow-x: auto;
             margin-top: 15px;
+            line-height: 1.4;
         }
 
         .description-text {
             color: #666;
             margin-bottom: 15px;
             line-height: 1.6;
+        }
+
+        .mod-details {
+            background: #f9f9f9;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            border-left: 3px solid #667eea;
+        }
+
+        .mod-details strong {
+            color: #667eea;
         }
     </style>
 </head>
@@ -451,7 +464,7 @@
                 <div class="description-text">
                     <p>יואב בוט הוא עוזר דיגיטלי חכם עם הרבה כלים שימושיים:</p>
                     <br>
-                    <p><strong>🎮 Minecraft Mod Generator</strong> - יצור מודים ל-Minecraft בקלות</p>
+                    <p><strong>🎮 Minecraft Mod Generator</strong> - תאר מוד וזה מתחנת אותו!</p>
                     <p><strong>💻 Code Generator</strong> - תרגום תיאור לקוד (Python, Java, JavaScript)</p>
                     <p><strong>🎨 Image Generator</strong> - הנדסת תמונות מתיאור טקסט</p>
                     <p><strong>🔊 Text to Speech</strong> - המרת טקסט לקול</p>
@@ -478,18 +491,19 @@
         <div id="minecraft" class="tab-content">
             <div class="card">
                 <h2>🎮 Minecraft Mod Generator</h2>
-                <div class="description-text">הנדסת קוד Minecraft Mods באופן אוטומטי</div>
+                <div class="description-text">
+                    📝 תאר את המוד שאתה רוצה, ואני אחנה את הקוד בשבילך!
+                    <br><br>
+                    דוגמאות:
+                    <br>• "חרב שעושה נזק כפול"
+                    <br>• "בלוק זהב שמאריך חיים"
+                    <br>• "אלכימיה לשדרוג פריטים"
+                </div>
 
                 <div class="input-group">
-                    <select id="modType">
-                        <option value="basic">Basic Mod</option>
-                        <option value="tool">Tool Mod</option>
-                        <option value="block">Block Mod</option>
-                        <option value="entity">Entity Mod</option>
-                    </select>
-                    <input type="text" id="modName" placeholder="שם המוד (e.g., SwordOfPower)">
-                    <button class="btn btn-primary" onclick="generateMinecraftMod()">🚀 הנדסה</button>
+                    <textarea id="modDescription" placeholder="תאר את המוד שאתה רוצה... (לדוגמה: חרב שעושה נזק כפול)"></textarea>
                 </div>
+                <button class="btn btn-primary" onclick="generateMinecraftMod()">⚡ חנה מוד</button>
 
                 <div id="modOutput"></div>
             </div>
@@ -638,43 +652,174 @@
             }
         }
 
-        // Minecraft Mod Generator
+        // Advanced Minecraft Mod Generator
         function generateMinecraftMod() {
-            const modType = document.getElementById('modType').value;
-            const modName = document.getElementById('modName').value.trim() || 'MyMod';
+            const description = document.getElementById('modDescription').value.trim().toLowerCase();
+            
+            if (!description) {
+                alert('אנא תאר את המוד שאתה רוצה');
+                return;
+            }
 
-            const templates = {
-                basic: `public class ${modName}Mod {
-    public static void init() {
-        System.out.println("${modName} Mod Initialized!");
+            let modCode = '';
+            let modName = 'CustomMod';
+            let modType = 'Unknown';
+            let modFeatures = [];
+
+            // Parse description and generate appropriate code
+            if (description.includes('חרב') || description.includes('sword')) {
+                modType = 'Sword';
+                modName = 'PowerSword';
+                modFeatures.push('✅ חרב מיוחדת');
+                modFeatures.push('✅ נזק משופר');
+                
+                if (description.includes('כפול') || description.includes('double')) {
+                    modFeatures.push('✅ נזק כפול');
+                    modCode = `public class PowerSwordItem extends SwordItem {
+    public PowerSwordItem(Tier tier, int attackDamage, float attackSpeed, Item.Properties properties) {
+        super(tier, attackDamage + 5, attackSpeed, properties);
     }
-}`,
-                tool: `public class ${modName}Tool extends Item {
-    public ${modName}Tool() {
-        super(new Item.Properties());
+
+    @Override
+    public boolean hurtEnemy(ItemStack itemStack, LivingEntity target, LivingEntity attacker) {
+        // נזק כפול
+        target.hurt(attacker.damageSources().generic(), 5.0F);
+        return true;
     }
-}`,
-                block: `public class ${modName}Block extends Block {
-    public ${modName}Block(AbstractBlock.Properties properties) {
+}`;
+                } else {
+                    modCode = `public class PowerSwordItem extends SwordItem {
+    public PowerSwordItem(Tier tier, int attackDamage, float attackSpeed, Item.Properties properties) {
+        super(tier, attackDamage + 3, attackSpeed, properties);
+    }
+}`;
+                }
+            }
+            else if (description.includes('בלוק') || description.includes('block')) {
+                modType = 'Block';
+                modName = 'GoldenBlock';
+                modFeatures.push('✅ בלוק מיוחד');
+                
+                if (description.includes('זהב') || description.includes('gold')) {
+                    modFeatures.push('✅ בלוק זהב');
+                    if (description.includes('חיים') || description.includes('health')) {
+                        modFeatures.push('✅ אפקט הרחבת חיים');
+                        modCode = `public class GoldenBlock extends Block {
+    public GoldenBlock(AbstractBlock.Properties properties) {
         super(properties);
     }
-}`,
-                entity: `public class ${modName}Entity extends LivingEntity {
-    public ${modName}Entity(EntityType<${modName}Entity> type, Level level) {
-        super(type, level);
-    }
-}`
-            };
 
-            const code = templates[modType] || templates.basic;
+    @Override
+    public void entityInside(BlockState blockState, Level level, BlockPos blockPos, Entity entity) {
+        if (entity instanceof LivingEntity livingEntity) {
+            livingEntity.addEffect(new MobEffectInstance(
+                MobEffects.HEAL, 
+                40, 
+                1
+            ));
+        }
+        super.entityInside(blockState, level, blockPos, entity);
+    }
+}`;
+                    } else {
+                        modCode = `public class GoldenBlock extends Block {
+    public GoldenBlock(AbstractBlock.Properties properties) {
+        super(properties);
+    }
+
+    @Override
+    public float getExplosionResistance() {
+        return 50.0F; // עמיד מאוד
+    }
+}`;
+                    }
+                }
+            }
+            else if (description.includes('אלכימיה') || description.includes('alchemy')) {
+                modType = 'Alchemy';
+                modName = 'AlchemySystem';
+                modFeatures.push('✅ מערכת אלכימיה');
+                modFeatures.push('✅ שדרוג פריטים');
+                modFeatures.push('✅ תמائות מיוחדות');
+                modCode = `public class AlchemyTable extends Block {
+    public AlchemyTable(AbstractBlock.Properties properties) {
+        super(properties);
+    }
+
+    @Override
+    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
+        if (!level.isClientSide && player.containerMenu == player.inventoryMenu) {
+            player.openMenu(new SimpleMenuProvider(
+                (containerId, playerInventory, playerEntity) -> new AlchemyMenu(containerId, playerInventory),
+                Component.literal("Alchemy Table")
+            ));
+        }
+        return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+}`;
+            }
+            else if (description.includes('כלי') || description.includes('tool')) {
+                modType = 'Tool';
+                modName = 'SpecialTool';
+                modFeatures.push('✅ כלי מיוחד');
+                modFeatures.push('✅ ביצועים משופרים');
+                modCode = `public class SpecialToolItem extends PickaxeItem {
+    public SpecialToolItem(Tier tier, int attackDamage, float attackSpeed, Item.Properties properties) {
+        super(tier, attackDamage + 2, attackSpeed, properties);
+    }
+
+    @Override
+    public boolean mineBlock(ItemStack itemStack, Level level, BlockState blockState, BlockPos blockPos, LivingEntity livingEntity) {
+        // כלי מיוחד עם ביצועים משופרים
+        return super.mineBlock(itemStack, level, blockState, blockPos, livingEntity);
+    }
+}`;
+            }
+            else {
+                // Default mod
+                modType = 'Generic';
+                modName = 'CustomMod';
+                modFeatures.push('✅ מוד מיוחד');
+                modCode = `public class CustomMod {
+    public static final String MOD_ID = "custommod";
+
+    public CustomMod() {
+        // מוד מיוחד
+    }
+
+    public static void init() {
+        System.out.println("CustomMod initialized!");
+    }
+}`;
+            }
+
+            // Generate output
             const output = `
                 <div class="success-message">✅ מוד הנדסה בהצלחה!</div>
-                <div class="minecraft-mod">
-                    <strong>שם המוד:</strong> ${modName}<br>
-                    <strong>סוג:</strong> ${modType.toUpperCase()}<br>
-                    <strong>קוד:</strong>
-                    <div class="code-output">${code}</div>
-                    <button class="copy-btn" onclick="copyToClipboard('${code.replace(/'/g, "\\'")}')">📋 Copy</button>
+                
+                <div class="mod-details">
+                    <strong>📝 תיאור:</strong> ${description}
+                </div>
+
+                <div class="mod-details">
+                    <strong>🎯 סוג המוד:</strong> ${modType}
+                </div>
+
+                <div class="mod-details">
+                    <strong>📦 שם המוד:</strong> ${modName}
+                </div>
+
+                <div class="mod-details">
+                    <strong>✨ תכונות:</strong>
+                    <div style="margin-top: 8px;">
+                        ${modFeatures.map(f => `<div>• ${f}</div>`).join('')}
+                    </div>
+                </div>
+
+                <div style="margin-top: 15px;">
+                    <strong>💻 Java Code:</strong>
+                    <div class="code-output">${modCode}</div>
+                    <button class="copy-btn" onclick="copyToClipboard(\`${modCode.replace(/`/g, '\\`')}\`)">📋 Copy Code</button>
                 </div>
             `;
 
@@ -713,11 +858,11 @@ public class Main {
             const code = templates[language] || templates.python;
             const output = `
                 <div class="success-message">✅ קוד הנדסה בהצלחה!</div>
-                <div class="minecraft-mod">
+                <div class="mod-output">
                     <strong>שפה:</strong> ${language.toUpperCase()}<br>
                     <strong>תיאור:</strong> ${description}<br>
                     <div class="code-output">${code}</div>
-                    <button class="copy-btn" onclick="copyToClipboard('${code.replace(/'/g, "\\'")}')">📋 Copy</button>
+                    <button class="copy-btn" onclick="copyToClipboard(\`${code.replace(/`/g, '\\`')}\`)">📋 Copy</button>
                 </div>
             `;
 
@@ -747,7 +892,7 @@ public class Main {
 
             const output = `
                 <div class="success-message">✅ בקשת ההמרה התקבלה!</div>
-                <div class="minecraft-mod">
+                <div class="mod-output">
                     <strong>טקסט:</strong> ${text}<br>
                     <strong>שפה:</strong> ${language.toUpperCase()}<br>
                     <p style="color: #666; font-size: 0.9em;">🎙️ קוד קול יופק בעוד מספר שניות...</p>
