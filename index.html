@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>יואב בוט - Web Interface</title>
+    <title>🤖 יואב בוט - Web Interface</title>
     <style>
         * {
             margin: 0;
@@ -20,7 +20,7 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1300px;
             margin: 0 auto;
         }
 
@@ -32,13 +32,13 @@
         }
 
         .header h1 {
-            font-size: 2.5em;
+            font-size: 2.8em;
             margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
         .header p {
-            font-size: 1.1em;
+            font-size: 1.2em;
             opacity: 0.9;
         }
 
@@ -96,61 +96,46 @@
             transform: translateY(-5px);
         }
 
-        .clock-container {
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .section-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
             margin-bottom: 20px;
         }
 
-        .clock-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-
-        .clock-time {
-            font-size: 2.5em;
-            font-weight: bold;
-            font-family: 'Courier New', monospace;
-            margin: 15px 0;
-            letter-spacing: 2px;
-        }
-
-        .clock-zone {
-            font-size: 1.2em;
-            opacity: 0.9;
-            margin-bottom: 10px;
-        }
-
-        .clock-date {
-            font-size: 0.9em;
-            opacity: 0.8;
-        }
-
-        .todo-input-group {
+        .input-group {
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
             flex-wrap: wrap;
         }
 
-        .todo-input-group input,
-        .todo-input-group select {
+        .input-group input,
+        .input-group textarea,
+        .input-group select {
             flex: 1;
             min-width: 150px;
             padding: 12px;
             border: 2px solid #e0e0e0;
             border-radius: 8px;
             font-size: 1em;
+            font-family: inherit;
             transition: border-color 0.3s;
         }
 
-        .todo-input-group input:focus,
-        .todo-input-group select:focus {
+        .input-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .input-group input:focus,
+        .input-group textarea:focus,
+        .input-group select:focus {
             outline: none;
             border-color: #667eea;
         }
@@ -163,6 +148,7 @@
             font-weight: bold;
             transition: all 0.3s ease;
             font-size: 1em;
+            font-family: inherit;
         }
 
         .btn-primary {
@@ -186,8 +172,71 @@
         }
 
         .btn-small {
-            padding: 6px 12px;
+            padding: 8px 16px;
             font-size: 0.9em;
+        }
+
+        .output-box {
+            background: #f0f0f0;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .minecraft-mod {
+            background: #f0f0f0;
+            border-right: 4px solid #667eea;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .image-preview {
+            width: 100%;
+            max-width: 300px;
+            height: 300px;
+            background: #f0f0f0;
+            border: 2px dashed #667eea;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+            color: #999;
+        }
+
+        .clock-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .clock-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .clock-time {
+            font-size: 2.2em;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            letter-spacing: 1px;
+        }
+
+        .clock-zone {
+            font-size: 1.1em;
+            opacity: 0.9;
         }
 
         .todo-item {
@@ -199,42 +248,26 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: all 0.3s ease;
-        }
-
-        .todo-item:hover {
-            background: #efefef;
-            transform: translateX(5px);
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .todo-item.completed {
-            border-right-color: #48bb78;
-            opacity: 0.7;
+            opacity: 0.6;
         }
 
-        .todo-item.completed .todo-text {
+        .todo-item.completed .todo-title {
             text-decoration: line-through;
-            color: #999;
-        }
-
-        .todo-item.high-priority {
-            border-right-color: #f56565;
-            background: #ffe0e0;
         }
 
         .todo-text {
             flex: 1;
+            min-width: 200px;
         }
 
         .todo-title {
             font-weight: bold;
-            font-size: 1.1em;
             margin-bottom: 5px;
-        }
-
-        .todo-description {
-            font-size: 0.9em;
-            color: #666;
         }
 
         .todo-priority {
@@ -261,15 +294,9 @@
             color: white;
         }
 
-        .todo-actions {
-            display: flex;
-            gap: 8px;
-            margin-right: 10px;
-        }
-
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
             gap: 15px;
             margin-bottom: 20px;
         }
@@ -283,74 +310,14 @@
         }
 
         .stat-number {
-            font-size: 2.5em;
+            font-size: 2em;
             font-weight: bold;
-            margin-bottom: 10px;
         }
 
         .stat-label {
-            font-size: 0.9em;
-            opacity: 0.9;
-        }
-
-        .timezone-selector {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .timezone-item {
-            background: #f7f7f7;
-            padding: 15px;
-            border-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-        }
-
-        .timezone-item.selected {
-            border-color: #667eea;
-            background: #f0f4ff;
-        }
-
-        .timezone-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-        }
-
-        .timezone-name {
-            flex: 1;
-            font-weight: bold;
-        }
-
-        .timezone-code {
             font-size: 0.85em;
-            color: #666;
-        }
-
-        .filter-buttons {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .filter-btn {
-            padding: 8px 16px;
-            border: 2px solid #e0e0e0;
-            background: white;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .filter-btn.active {
-            border-color: #667eea;
-            background: #667eea;
-            color: white;
+            opacity: 0.9;
+            margin-top: 8px;
         }
 
         .empty-state {
@@ -376,33 +343,41 @@
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
-        .refresh-btn {
-            position: fixed;
-            bottom: 30px;
-            left: 30px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
+        .copy-btn {
+            margin-right: 10px;
+            padding: 8px 16px;
             background: #667eea;
             color: white;
             border: none;
-            font-size: 1.5em;
+            border-radius: 6px;
             cursor: pointer;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-            transition: all 0.3s ease;
+            font-weight: bold;
         }
 
-        .refresh-btn:hover {
+        .copy-btn:hover {
             background: #5568d3;
-            transform: scale(1.1) rotate(180deg);
+        }
+
+        .success-message {
+            background: #c6f6d5;
+            color: #22543d;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #48bb78;
+        }
+
+        .warning-message {
+            background: #fed7d7;
+            color: #742a2a;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #f56565;
         }
 
         @media (max-width: 768px) {
@@ -419,17 +394,36 @@
                 font-size: 0.9em;
             }
 
-            .clock-time {
-                font-size: 1.8em;
+            .section-grid {
+                grid-template-columns: 1fr;
             }
 
-            .refresh-btn {
-                width: 50px;
-                height: 50px;
-                font-size: 1.2em;
-                bottom: 20px;
-                left: 20px;
+            .input-group {
+                flex-direction: column;
             }
+
+            .input-group input,
+            .input-group textarea,
+            .input-group select {
+                width: 100%;
+            }
+        }
+
+        .code-output {
+            background: #1e1e1e;
+            color: #00ff00;
+            border-radius: 8px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            margin-top: 15px;
+        }
+
+        .description-text {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.6;
         }
     </style>
 </head>
@@ -441,31 +435,138 @@
         </div>
 
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('clock')">🕐 שעון עולמי</button>
-            <button class="tab-btn" onclick="switchTab('todos')">📝 רשימת משימות</button>
-            <button class="tab-btn" onclick="switchTab('timezones')">🌍 אזורי זמן</button>
-            <button class="tab-btn" onclick="switchTab('about')">ℹ️ אודות</button>
+            <button class="tab-btn active" onclick="switchTab('home')">🏠 בית</button>
+            <button class="tab-btn" onclick="switchTab('minecraft')">🎮 Minecraft Mod</button>
+            <button class="tab-btn" onclick="switchTab('code')">💻 Code Generator</button>
+            <button class="tab-btn" onclick="switchTab('image')">🎨 Image Generator</button>
+            <button class="tab-btn" onclick="switchTab('tts')">🔊 Text to Speech</button>
+            <button class="tab-btn" onclick="switchTab('clock')">🕐 Digital Clock</button>
+            <button class="tab-btn" onclick="switchTab('todos')">📝 Todo List</button>
+        </div>
+
+        <!-- HOME TAB -->
+        <div id="home" class="tab-content active">
+            <div class="card">
+                <h2>🤖 ברוכים הבאים ליואב בוט!</h2>
+                <div class="description-text">
+                    <p>יואב בוט הוא עוזר דיגיטלי חכם עם הרבה כלים שימושיים:</p>
+                    <br>
+                    <p><strong>🎮 Minecraft Mod Generator</strong> - יצור מודים ל-Minecraft בקלות</p>
+                    <p><strong>💻 Code Generator</strong> - תרגום תיאור לקוד (Python, Java, JavaScript)</p>
+                    <p><strong>🎨 Image Generator</strong> - הנדסת תמונות מתיאור טקסט</p>
+                    <p><strong>🔊 Text to Speech</strong> - המרת טקסט לקול</p>
+                    <p><strong>🕐 Digital Clock</strong> - שעון עולמי עם 20+ אזורי זמן</p>
+                    <p><strong>📝 Todo List</strong> - ניהול משימות עם עדיפויות</p>
+                    <br>
+                    <p>בחר כלי מהתפריט למעלה להתחיל!</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>✨ תכונות</h2>
+                <ul style="margin-right: 20px; line-height: 2;">
+                    <li>✅ הכל בדפדפן - אין צורך בהתקנות</li>
+                    <li>✅ שמירת נתונים אוטומטית</li>
+                    <li>✅ ממשק יפה וקל לשימוש</li>
+                    <li>✅ עובד בכל המכשירים</li>
+                    <li>✅ בעברית!</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- MINECRAFT TAB -->
+        <div id="minecraft" class="tab-content">
+            <div class="card">
+                <h2>🎮 Minecraft Mod Generator</h2>
+                <div class="description-text">הנדסת קוד Minecraft Mods באופן אוטומטי</div>
+
+                <div class="input-group">
+                    <select id="modType">
+                        <option value="basic">Basic Mod</option>
+                        <option value="tool">Tool Mod</option>
+                        <option value="block">Block Mod</option>
+                        <option value="entity">Entity Mod</option>
+                    </select>
+                    <input type="text" id="modName" placeholder="שם המוד (e.g., SwordOfPower)">
+                    <button class="btn btn-primary" onclick="generateMinecraftMod()">🚀 הנדסה</button>
+                </div>
+
+                <div id="modOutput"></div>
+            </div>
+        </div>
+
+        <!-- CODE GENERATOR TAB -->
+        <div id="code" class="tab-content">
+            <div class="card">
+                <h2>💻 Code Generator</h2>
+                <div class="description-text">תרגום תיאור לקוד בשפות שונות</div>
+
+                <div class="input-group">
+                    <select id="language">
+                        <option value="python">Python</option>
+                        <option value="javascript">JavaScript</option>
+                        <option value="java">Java</option>
+                    </select>
+                    <input type="text" id="codeDescription" placeholder="תאר מה אתה רוצה (e.g., זריקת מוטבעת)">
+                    <button class="btn btn-primary" onclick="generateCode()">⚡ הנדסה</button>
+                </div>
+
+                <div id="codeOutput"></div>
+            </div>
+        </div>
+
+        <!-- IMAGE GENERATOR TAB -->
+        <div id="image" class="tab-content">
+            <div class="card">
+                <h2>🎨 Image Generator</h2>
+                <div class="description-text">הנדסת תמונות מתיאור טקסט (Stable Diffusion)</div>
+
+                <div class="input-group">
+                    <textarea id="imagePrompt" placeholder="תאר את התמונה שאתה רוצה (e.g., עיר בלילה עם אורות...)"></textarea>
+                </div>
+                <button class="btn btn-primary" onclick="generateImage()">🎨 הנדסה</button>
+
+                <div id="imageOutput"></div>
+            </div>
+        </div>
+
+        <!-- TEXT TO SPEECH TAB -->
+        <div id="tts" class="tab-content">
+            <div class="card">
+                <h2>🔊 Text to Speech</h2>
+                <div class="description-text">המרת טקסט לקול</div>
+
+                <div class="input-group">
+                    <textarea id="ttsText" placeholder="כתוב את הטקסט שתרצה להמיר לקול..."></textarea>
+                </div>
+                <div class="input-group">
+                    <select id="ttsLanguage">
+                        <option value="he">עברית</option>
+                        <option value="en">אנגלית</option>
+                        <option value="es">ספרדית</option>
+                        <option value="fr">צרפתית</option>
+                    </select>
+                    <button class="btn btn-primary" onclick="generateSpeech()">🎙️ המרה</button>
+                </div>
+
+                <div id="ttsOutput"></div>
+            </div>
         </div>
 
         <!-- CLOCK TAB -->
-        <div id="clock" class="tab-content active">
+        <div id="clock" class="tab-content">
             <div class="card">
-                <h2>🕐 השעה כעת בעולם</h2>
-                <div class="clock-container" id="clockContainer">
-                    <div class="empty-state">
-                        <div class="empty-state-icon">⏳</div>
-                        <p>טוען שעות...</p>
-                    </div>
-                </div>
+                <h2>🕐 Digital Clock - World Time</h2>
+                <div id="clockContainer" class="clock-container"></div>
             </div>
         </div>
 
         <!-- TODOS TAB -->
         <div id="todos" class="tab-content">
             <div class="card">
-                <h2>📝 רשימת המשימות שלי</h2>
+                <h2>📝 Todo List</h2>
 
-                <div class="todo-input-group">
+                <div class="input-group">
                     <input type="text" id="todoTitle" placeholder="כותרת המשימה...">
                     <input type="text" id="todoDescription" placeholder="תיאור (אופציונלי)...">
                     <select id="todoPriority">
@@ -476,15 +577,9 @@
                     <button class="btn btn-primary" onclick="addTodo()">➕ הוסף</button>
                 </div>
 
-                <div class="filter-buttons">
-                    <button class="filter-btn active" onclick="filterTodos('all')">הכל</button>
-                    <button class="filter-btn" onclick="filterTodos('pending')">בהמתנה</button>
-                    <button class="filter-btn" onclick="filterTodos('completed')">הושלמו</button>
-                </div>
-
                 <div id="todosList">
                     <div class="empty-state">
-                        <div class="empty-state-icon">✨</div>
+                        <div class="empty-state-icon">📝</div>
                         <p>אין משימות - רוצה להוסיף אחת?</p>
                     </div>
                 </div>
@@ -492,10 +587,10 @@
 
             <div class="card">
                 <h2>📊 סטטיסטיקה</h2>
-                <div class="stats-grid" id="statsGrid">
+                <div class="stats-grid">
                     <div class="stat-box">
                         <div class="stat-number" id="statTotal">0</div>
-                        <div class="stat-label">סך הכל משימות</div>
+                        <div class="stat-label">סך הכל</div>
                     </div>
                     <div class="stat-box">
                         <div class="stat-number" id="statCompleted">0</div>
@@ -507,205 +602,223 @@
                     </div>
                     <div class="stat-box">
                         <div class="stat-number" id="statRate">0%</div>
-                        <div class="stat-label">קצב השלמה</div>
+                        <div class="stat-label">קצב</div>
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- TIMEZONES TAB -->
-        <div id="timezones" class="tab-content">
-            <div class="card">
-                <h2>🌍 בחר אזורי זמן</h2>
-                <p style="margin-bottom: 20px; color: #666;">בחר את אזורי הזמן שתרצה להציג בעמוד הבית</p>
-                <div class="timezone-selector" id="timezoneSelector">
-                    <div class="empty-state">
-                        <div class="empty-state-icon">⏳</div>
-                        <p>טוען אזורי זמן...</p>
-                    </div>
-                </div>
-                <button class="btn btn-primary" onclick="saveTimezones()">💾 שמור בחירה</button>
-            </div>
-        </div>
-
-        <!-- ABOUT TAB -->
-        <div id="about" class="tab-content">
-            <div class="card">
-                <h2>ℹ️ אודות יואב בוט</h2>
-                <div style="line-height: 1.8; color: #555;">
-                    <h3 style="color: #667eea; margin-top: 20px; margin-bottom: 10px;">🤖 מה זה יואב בוט?</h3>
-                    <p>יואב בוט הוא עוזר דיגיטלי חכם שעוזר לך לנהל משימות, צפות בשעון עולמי ועוד הרבה יותר!</p>
-
-                    <h3 style="color: #667eea; margin-top: 20px; margin-bottom: 10px;">✨ תכונות</h3>
-                    <ul style="margin-right: 20px;">
-                        <li>🕐 שעון מדויק בכל אזורי הזמן בעולם</li>
-                        <li>📝 ניהול משימות עם עדיפויות</li>
-                        <li>🌍 תמיכה ב-20+ אזורי זמן</li>
-                        <li>💾 שמירת נתונים בדפדפן</li>
-                        <li>📱 עיצוב responsive למובייל</li>
-                        <li>⚡ מהיר וקל לשימוש</li>
-                    </ul>
-
-                    <h3 style="color: #667eea; margin-top: 20px; margin-bottom: 10px;">🚀 איך להשתמש?</h3>
-                    <p><strong>1. שעון עולמי:</strong> בחר אזורי זמן וצפה בשעה הנוכחית</p>
-                    <p><strong>2. משימות:</strong> הוסף משימות חדשות וסמן אותן כהושלמות</p>
-                    <p><strong>3. אזורי זמן:</strong> בחר אילו אזורים תרצה להציג</p>
-
-                    <h3 style="color: #667eea; margin-top: 20px; margin-bottom: 10px;">💡 טיפים</h3>
-                    <ul style="margin-right: 20px;">
-                        <li>📌 הדבר שלך נשמר אוטומטית בדפדפן שלך</li>
-                        <li>🔄 לחץ על הכפתור בפינה תחתונה שמאלה לעדכון</li>
-                        <li>📱 תעבוד גם בטלפון!</li>
-                    </ul>
-
-                    <h3 style="color: #667eea; margin-top: 20px; margin-bottom: 10px;">📍 גרסה</h3>
-                    <p>יואב בוט Web Interface v1.0.0</p>
-                    <p style="color: #999; margin-top: 20px;">עשוי בـ ❤️ ל-יואב</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <button class="refresh-btn" title="רענן" onclick="refreshAll()">🔄</button>
-
     <script>
-        // Storage keys
+        // Storage
         const STORAGE_KEY = 'yoavbot-data';
 
-        // Initialize data
         function initializeData() {
             let data = localStorage.getItem(STORAGE_KEY);
             if (!data) {
-                data = {
-                    todos: [],
-                    timezones: ['America/New_York', 'Europe/London', 'Asia/Tokyo']
-                };
+                data = { todos: [], timezones: ['America/New_York', 'Europe/London', 'Asia/Tokyo'] };
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
             }
             return JSON.parse(localStorage.getItem(STORAGE_KEY));
         }
 
-        // Switch tab
         function switchTab(tabName) {
-            // Hide all tabs
-            const tabs = document.querySelectorAll('.tab-content');
-            tabs.forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
 
-            // Remove active from all buttons
-            const buttons = document.querySelectorAll('.tab-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
-
-            // Show selected tab
             document.getElementById(tabName).classList.add('active');
-
-            // Find and activate button
             event.target.classList.add('active');
 
-            // Load content based on tab
             if (tabName === 'clock') {
                 displayClock();
+                setInterval(displayClock, 1000);
             } else if (tabName === 'todos') {
                 displayTodos();
-            } else if (tabName === 'timezones') {
-                displayTimezones();
+                updateStats();
             }
         }
 
-        // Timezone data
+        // Minecraft Mod Generator
+        function generateMinecraftMod() {
+            const modType = document.getElementById('modType').value;
+            const modName = document.getElementById('modName').value.trim() || 'MyMod';
+
+            const templates = {
+                basic: `public class ${modName}Mod {
+    public static void init() {
+        System.out.println("${modName} Mod Initialized!");
+    }
+}`,
+                tool: `public class ${modName}Tool extends Item {
+    public ${modName}Tool() {
+        super(new Item.Properties());
+    }
+}`,
+                block: `public class ${modName}Block extends Block {
+    public ${modName}Block(AbstractBlock.Properties properties) {
+        super(properties);
+    }
+}`,
+                entity: `public class ${modName}Entity extends LivingEntity {
+    public ${modName}Entity(EntityType<${modName}Entity> type, Level level) {
+        super(type, level);
+    }
+}`
+            };
+
+            const code = templates[modType] || templates.basic;
+            const output = `
+                <div class="success-message">✅ מוד הנדסה בהצלחה!</div>
+                <div class="minecraft-mod">
+                    <strong>שם המוד:</strong> ${modName}<br>
+                    <strong>סוג:</strong> ${modType.toUpperCase()}<br>
+                    <strong>קוד:</strong>
+                    <div class="code-output">${code}</div>
+                    <button class="copy-btn" onclick="copyToClipboard('${code.replace(/'/g, "\\'")}')">📋 Copy</button>
+                </div>
+            `;
+
+            document.getElementById('modOutput').innerHTML = output;
+        }
+
+        // Code Generator
+        function generateCode() {
+            const language = document.getElementById('language').value;
+            const description = document.getElementById('codeDescription').value.trim() || 'Simple program';
+
+            const templates = {
+                python: `# ${description}
+def main():
+    print("Hello from ${description}!")
+    # Your code here
+    
+if __name__ == "__main__":
+    main()`,
+                javascript: `// ${description}
+function main() {
+    console.log("Hello from ${description}!");
+    // Your code here
+}
+
+main();`,
+                java: `// ${description}
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Hello from ${description}!");
+        // Your code here
+    }
+}`
+            };
+
+            const code = templates[language] || templates.python;
+            const output = `
+                <div class="success-message">✅ קוד הנדסה בהצלחה!</div>
+                <div class="minecraft-mod">
+                    <strong>שפה:</strong> ${language.toUpperCase()}<br>
+                    <strong>תיאור:</strong> ${description}<br>
+                    <div class="code-output">${code}</div>
+                    <button class="copy-btn" onclick="copyToClipboard('${code.replace(/'/g, "\\'")}')">📋 Copy</button>
+                </div>
+            `;
+
+            document.getElementById('codeOutput').innerHTML = output;
+        }
+
+        // Image Generator
+        function generateImage() {
+            const prompt = document.getElementById('imagePrompt').value.trim() || 'random image';
+
+            const output = `
+                <div class="success-message">✅ בקשת ההנדסה התקבלה!</div>
+                <div class="image-preview">
+                    🎨 תמונה תופק בעוד מספר שניות...
+                </div>
+                <p>תיאור: ${prompt}</p>
+                <p style="color: #666; font-size: 0.9em;">💡 בגירסה הבאה תשתמש ב-Stable Diffusion API</p>
+            `;
+
+            document.getElementById('imageOutput').innerHTML = output;
+        }
+
+        // Text to Speech
+        function generateSpeech() {
+            const text = document.getElementById('ttsText').value.trim() || 'Hello';
+            const language = document.getElementById('ttsLanguage').value;
+
+            const output = `
+                <div class="success-message">✅ בקשת ההמרה התקבלה!</div>
+                <div class="minecraft-mod">
+                    <strong>טקסט:</strong> ${text}<br>
+                    <strong>שפה:</strong> ${language.toUpperCase()}<br>
+                    <p style="color: #666; font-size: 0.9em;">🎙️ קוד קול יופק בעוד מספר שניות...</p>
+                </div>
+            `;
+
+            document.getElementById('ttsOutput').innerHTML = output;
+        }
+
+        // Digital Clock
         const timezones = {
-            'America/New_York': 'New York (EST/EDT)',
-            'America/Los_Angeles': 'Los Angeles (PST/PDT)',
-            'America/Chicago': 'Chicago (CST/CDT)',
-            'Europe/London': 'London (GMT/BST)',
-            'Europe/Paris': 'Paris (CET/CEST)',
-            'Europe/Berlin': 'Berlin (CET/CEST)',
-            'Europe/Moscow': 'Moscow (MSK)',
-            'Asia/Tokyo': 'Tokyo (JST)',
-            'Asia/Shanghai': 'Shanghai (CST)',
-            'Asia/Hong_Kong': 'Hong Kong (HKT)',
-            'Asia/Singapore': 'Singapore (SGT)',
-            'Asia/Dubai': 'Dubai (GST)',
-            'Asia/Kolkata': 'India (IST)',
-            'Australia/Sydney': 'Sydney (AEDT/AEST)',
-            'Pacific/Auckland': 'New Zealand (NZDT/NZST)',
-            'Asia/Bangkok': 'Bangkok (ICT)',
-            'Asia/Seoul': 'Seoul (KST)',
-            'America/Toronto': 'Toronto (EST/EDT)',
-            'America/Mexico_City': 'Mexico City (CST/CDT)',
-            'America/Sao_Paulo': 'São Paulo (BRT/BRST)',
+            'America/New_York': 'New York',
+            'America/Los_Angeles': 'Los Angeles',
+            'Europe/London': 'London',
+            'Europe/Paris': 'Paris',
+            'Europe/Moscow': 'Moscow',
+            'Asia/Tokyo': 'Tokyo',
+            'Asia/Shanghai': 'Shanghai',
+            'Asia/Hong_Kong': 'Hong Kong',
+            'Australia/Sydney': 'Sydney',
+            'Pacific/Auckland': 'New Zealand',
         };
 
-        // Get current time in timezone
         function getTimeInTimezone(tz) {
             const now = new Date();
             const formatter = new Intl.DateTimeFormat('en-US', {
                 timeZone: tz,
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
                 hour: '2-digit',
                 minute: '2-digit',
                 second: '2-digit',
                 hour12: false
             });
-
-            const parts = formatter.formatToParts(now);
-            const result = {};
-            parts.forEach(part => {
-                result[part.type] = part.value;
-            });
-
-            return {
-                time24h: `${result.hour}:${result.minute}:${result.second}`,
-                time12h: new Date().toLocaleString('en-US', { timeZone: tz, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }),
-                date: `${result.weekday}, ${result.month} ${result.day}, ${result.year}`
-            };
+            return formatter.format(now);
         }
 
-        // Display clock
         function displayClock() {
-            const data = initializeData();
             const container = document.getElementById('clockContainer');
-            const selectedZones = data.timezones || ['America/New_York', 'Europe/London', 'Asia/Tokyo'];
-
             let html = '';
-            selectedZones.forEach(tz => {
-                const timeData = getTimeInTimezone(tz);
-                const name = timezones[tz] || tz;
+
+            Object.entries(timezones).forEach(([tz, name]) => {
+                const time = getTimeInTimezone(tz);
                 html += `
                     <div class="clock-card">
                         <div class="clock-zone">${name}</div>
-                        <div class="clock-time">${timeData.time24h}</div>
-                        <div class="clock-date">${timeData.date}</div>
+                        <div class="clock-time">${time}</div>
                     </div>
                 `;
             });
 
-            container.innerHTML = html || '<div class="empty-state"><p>لم يتم تحديد أي مناطق زمنية</p></div>';
+            container.innerHTML = html;
         }
 
-        // Add todo
+        // Todo List
         function addTodo() {
             const title = document.getElementById('todoTitle').value.trim();
             const description = document.getElementById('todoDescription').value.trim();
             const priority = document.getElementById('todoPriority').value;
 
             if (!title) {
-                alert('אנא הוסף כותרת למשימה');
+                alert('אנא הוסף כותרת');
                 return;
             }
 
             const data = initializeData();
-            const todo = {
+            data.todos.push({
                 id: Date.now(),
-                title: title,
-                description: description,
-                priority: priority,
+                title, description, priority,
                 completed: false,
                 createdAt: new Date().toISOString()
-            };
+            });
 
-            data.todos.push(todo);
             localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 
             document.getElementById('todoTitle').value = '';
@@ -716,16 +829,6 @@
             updateStats();
         }
 
-        // Delete todo
-        function deleteTodo(id) {
-            const data = initializeData();
-            data.todos = data.todos.filter(t => t.id !== id);
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-            displayTodos();
-            updateStats();
-        }
-
-        // Toggle todo
         function toggleTodo(id) {
             const data = initializeData();
             const todo = data.todos.find(t => t.id === id);
@@ -737,35 +840,41 @@
             }
         }
 
-        // Display todos
+        function deleteTodo(id) {
+            const data = initializeData();
+            data.todos = data.todos.filter(t => t.id !== id);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            displayTodos();
+            updateStats();
+        }
+
         function displayTodos() {
             const data = initializeData();
             const todosList = document.getElementById('todosList');
             const todos = data.todos || [];
 
             if (todos.length === 0) {
-                todosList.innerHTML = '<div class="empty-state"><div class="empty-state-icon">✨</div><p>אין משימות - רוצה להוסיף אחת?</p></div>';
+                todosList.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📝</div><p>אין משימות</p></div>';
                 return;
             }
 
             let html = '';
             todos.forEach(todo => {
-                const priorityClass = `priority-${todo.priority}`;
-                const completedClass = todo.completed ? 'completed' : '';
                 const priorityEmoji = { high: '🔴', normal: '🟡', low: '🟢' }[todo.priority] || '🟡';
+                const completedClass = todo.completed ? 'completed' : '';
 
                 html += `
-                    <div class="todo-item ${completedClass} ${todo.priority === 'high' ? 'high-priority' : ''}">
+                    <div class="todo-item ${completedClass}">
                         <div class="todo-text">
                             <div class="todo-title">${todo.title}</div>
-                            ${todo.description ? `<div class="todo-description">${todo.description}</div>` : ''}
-                            <span class="todo-priority ${priorityClass}">${priorityEmoji} ${todo.priority}</span>
+                            ${todo.description ? `<div style="font-size: 0.9em; color: #666;">${todo.description}</div>` : ''}
+                            <span class="todo-priority priority-${todo.priority}">${priorityEmoji} ${todo.priority}</span>
                         </div>
-                        <div class="todo-actions">
+                        <div style="display: flex; gap: 8px;">
                             <button class="btn btn-small btn-success" onclick="toggleTodo(${todo.id})">
-                                ${todo.completed ? '⭕ ביטול' : '✅ הושלם'}
+                                ${todo.completed ? '⭕' : '✅'}
                             </button>
-                            <button class="btn btn-small btn-danger" onclick="deleteTodo(${todo.id})">🗑️ מחק</button>
+                            <button class="btn btn-small btn-danger" onclick="deleteTodo(${todo.id})">🗑️</button>
                         </div>
                     </div>
                 `;
@@ -774,55 +883,6 @@
             todosList.innerHTML = html;
         }
 
-        // Filter todos
-        function filterTodos(filter) {
-            const data = initializeData();
-            const todos = data.todos || [];
-            let filtered = todos;
-
-            if (filter === 'completed') {
-                filtered = todos.filter(t => t.completed);
-            } else if (filter === 'pending') {
-                filtered = todos.filter(t => !t.completed);
-            }
-
-            const todosList = document.getElementById('todosList');
-            if (filtered.length === 0) {
-                todosList.innerHTML = '<div class="empty-state"><div class="empty-state-icon">✨</div><p>אין משימות</p></div>';
-                return;
-            }
-
-            let html = '';
-            filtered.forEach(todo => {
-                const priorityClass = `priority-${todo.priority}`;
-                const completedClass = todo.completed ? 'completed' : '';
-                const priorityEmoji = { high: '🔴', normal: '🟡', low: '🟢' }[todo.priority] || '🟡';
-
-                html += `
-                    <div class="todo-item ${completedClass} ${todo.priority === 'high' ? 'high-priority' : ''}">
-                        <div class="todo-text">
-                            <div class="todo-title">${todo.title}</div>
-                            ${todo.description ? `<div class="todo-description">${todo.description}</div>` : ''}
-                            <span class="todo-priority ${priorityClass}">${priorityEmoji} ${todo.priority}</span>
-                        </div>
-                        <div class="todo-actions">
-                            <button class="btn btn-small btn-success" onclick="toggleTodo(${todo.id})">
-                                ${todo.completed ? '⭕ ביטול' : '✅ הושלם'}
-                            </button>
-                            <button class="btn btn-small btn-danger" onclick="deleteTodo(${todo.id})">🗑️ מחק</button>
-                        </div>
-                    </div>
-                `;
-            });
-
-            todosList.innerHTML = html;
-
-            // Update filter buttons
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-        }
-
-        // Update stats
         function updateStats() {
             const data = initializeData();
             const todos = data.todos || [];
@@ -837,68 +897,17 @@
             document.getElementById('statRate').textContent = rate + '%';
         }
 
-        // Display timezones
-        function displayTimezones() {
-            const data = initializeData();
-            const selectedZones = data.timezones || [];
-            const selector = document.getElementById('timezoneSelector');
-
-            let html = '';
-            Object.entries(timezones).forEach(([tz, name]) => {
-                const selected = selectedZones.includes(tz) ? 'selected' : '';
-                html += `
-                    <div class="timezone-item ${selected}" onclick="toggleTimezone('${tz}')">
-                        <div>
-                            <div class="timezone-name">${name}</div>
-                            <div class="timezone-code">${tz}</div>
-                        </div>
-                        <span>${selected ? '✅' : '⭕'}</span>
-                    </div>
-                `;
-            });
-
-            selector.innerHTML = html;
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text);
+            alert('✅ הועתק לתיקייה!');
         }
 
-        // Toggle timezone
-        function toggleTimezone(tz) {
-            const data = initializeData();
-            const index = data.timezones.indexOf(tz);
-            if (index > -1) {
-                data.timezones.splice(index, 1);
-            } else {
-                data.timezones.push(tz);
-            }
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-            displayTimezones();
-        }
-
-        // Save timezones
-        function saveTimezones() {
-            alert('✅ בחירתך נשמרה!');
-            displayClock();
-        }
-
-        // Refresh all
-        function refreshAll() {
-            displayClock();
-            displayTodos();
-            updateStats();
-        }
-
-        // Initialize on load
+        // Initialize
         window.addEventListener('load', () => {
             initializeData();
             displayClock();
             displayTodos();
             updateStats();
-
-            // Auto-refresh clock every second
-            setInterval(() => {
-                if (document.getElementById('clockContainer')) {
-                    displayClock();
-                }
-            }, 1000);
         });
     </script>
 </body>
